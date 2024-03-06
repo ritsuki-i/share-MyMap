@@ -1,2 +1,0 @@
-// ritsuki desu!
-// uufwekrkwejr
