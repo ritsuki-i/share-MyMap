@@ -99,7 +99,19 @@ CreateAccount?.addEventListener("click", function () {
         alert("アカウント作成が完了しました");
       })
       .catch((error) => {
-        alert("存在しないメールアドレスです");
+        if (
+          error.message ===
+          "Firebase: Password should be at least 6 characters (auth/weak-password)."
+        ){
+          alert("パスワードは6文字以上で設定してください");
+        }else if (error.message === "Firebase: Error (auth/invalid-email)."){
+          alert("存在しないメールアドレスです");
+        }
+        else if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+          alert("そのメールアドレスはすでに登録されています。");
+        }else{
+          alert(error.message);
+        }
       });
   }
 });
