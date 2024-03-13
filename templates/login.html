@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../static/Authentication.js" defer type="module"></script>
     <title>Document</title>
 </head>
+
 <body>
-    <h1>login page</h1>
+    <h1>login</h1>
+    <div class="EmailPassLogin">
+        <div class="EmailLogin">
+            メールアドレス:
+            <input type="email" id="LoginEmail">
+        </div>
+        <div class="PassLogin">
+            パスワード:
+            <input type="password" id="LoginPass">
+        </div>
+        <button id="login-emailpass">ログイン</button>
+    </div>
+    <button id="login-google">googleでログイン</button>
+    <form action="/CreateAccount" method="post">
+        <button type="submit">アカウント作成</button>
+    </form>
 </body>
-</html>
+
+</html> 
