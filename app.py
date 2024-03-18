@@ -1,10 +1,11 @@
-from flask import Flask
-from flask import render_template , request, jsonify
-from User import User
+from flask import Flask, redirect, render_template, request, jsonify
+from src.User import User
+from src.lat_lng_finder import get_lat_lng
 
 app = Flask(__name__)
 User = User()
 
+GOOGLE_MAP_KEY = "AIzaSyBKOqBE1tCLB4_ruwU8WVyCuDRN0exE_xo"
 
 @app.route('/', methods=['GET'])
 def login():
@@ -36,7 +37,7 @@ def toMyMap():
         print(type(UserData))
         User.UserEmail = UserData['User']['email']
         User.UserID = UserData['User']['uid']
-        return jsonify({'message': 'Data received by Python'})
+        return redirect('/my-map')
     
 @app.route('/CreateAccount', methods=['GET','POST'])
 def CreateAccount():
