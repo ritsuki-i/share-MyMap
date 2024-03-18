@@ -1,15 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../static/Authentication.js" defer type="module"></script>
     <title>Document</title>
-</head>
-<body>
+    <style>
+      #map { height: 400px; width: 100%; }
+    </style>
+  </head>
+  <body>
     <h1>mymap page</h1>
     <p>{{ UserEmail }}</p>
     <p>{{ UserID }}</p>
     <button id="logout-btn">ログアウト</button>
-</body>
+
+    <!-- 場所検索用のフォーム -->
+    <div>
+      <form action="/my-map" method="POST">
+        <input type="hidden" name="form_type" value="search_location">
+        <label for="location">場所検索：</label>
+        <input type="text" name="location" id="location" placeholder="場所名">
+        <input type="submit" value="Search">
+      </form>
+    </div>
+
+    <!-- Googleマップを表示するためのdiv -->
+    <div id="map"></div>
+
+    <!-- マップのパラメータとして使用するJavaScript変数の設定 -->
+    <script>
+      let mapParams = {
+        lat: {{ lat }},
+        lng: {{ lng }},
+        zoom: 15,
+        googleMapKey: "{{ google_map_key }}",
+        mapMarker: {{ map_marker | tojson | safe }}
+      };
+    </script>
+    <!-- Googleマップを操作するためのJavaScriptファイル -->
+    <script src="../static/js/map.js"></script>
+  </body>
 </html>

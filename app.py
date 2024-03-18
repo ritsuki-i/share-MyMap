@@ -46,34 +46,44 @@ def CreateAccount():
     )
 
 # 2024/3/18 Ian
+# static/js/map.js, templates/mymap.html, src/lat_lng_finder.py, app.pyのmap_page()を追加
+# 今の時点でデータベースに入れるのは[ 緯度, 経度, ユーザが入力した名前, ユーザが入力したデスクリプション ]
+# データベースはまだ設定されていないから、今まだ一個のマーカーしか見せないようにしている。
 @app.route('/my-map', methods=['GET','POST'])
 def map_page():
-    def map_page():
-        # Default values for latitude and longitude
-        default_lat = 35.6764
-        default_lng = 139.6500
+    # デフォルトの緯度と経度を設定
+    default_lat = 35.6764
+    default_lng = 139.6500
 
-        if request.method == 'POST':
-            form_type = request.form.get('form_type')
+    if request.method == 'POST':
+        # フォームの種類を取得
+        form_type = request.form.get('form_type')
 
-            if form_type == 'search_location':
-                location = request.form.get('location')
-                lat_lng = get_lat_lng(location) if location else (default_lat, default_lng)
-                lat, lng = lat_lng if lat_lng else (default_lat, default_lng)
-            elif form_type == 'submit_location':
-                lat, lng = request.form.get('lat'), request.form.get('lng')
-                name = request.form.get('name')
-                description = request.form.get('description')
-                map_marker = {"label": name, "lat": lat, "lng": lng, "description": description}
-                return render_template("main.html", lat=lat, lng=lng, map_marker=map_marker,
-                                       google_map_key=GOOGLE_MAP_KEY)
-            else:
-                lat, lng = default_lat, default_lng
+        if form_type == 'search_location':
+            # ユーザーが入力した場所名から緯度と経度を検索
+            location = request.form.get('location')
+            lat_lng = get_lat_lng(location) if location else (default_lat, default_lng)
+            lat, lng = lat_lng if lat_lng else (default_lat, default_lng)
+        elif form_type == 'submit_location':
+            # ユーザーがフォームに入力した緯度、経度、名前、説明を取得
+            lat, lng = request.form.get('lat'), request.form.get('lng')
+            name = request.form.get('name')
+            description = request.form.get('description')
+            # マップマーカーの情報を辞書で作成
+            map_marker = {"label": name, "lat": lat, "lng": lng, "description": description}
+            # テンプレートに変数を渡してレンダリング
+            return render_template("mymap.html", lat=lat, lng=lng, map_marker=map_marker,
+                                   google_map_key=GOOGLE_MAP_KEY)
         else:
-            # GET request or no form submission: use default values
+            # それ以外のPOSTリクエストではデフォルト値を使用
             lat, lng = default_lat, default_lng
+    else:
+        # GETリクエストの場合はデフォルト値を使用
+        lat, lng = default_lat, default_lng
 
-        return render_template("main.html", lat=lat, lng=lng, google_map_key=GOOGLE_MAP_KEY, map_marker=None)
+    # マップページを表示。初期値または検索結果をマップに反映
+    return render_template("mymap.html", lat=lat, lng=lng, google_map_key=GOOGLE_MAP_KEY, map_marker=None)
+
     
 if __name__ == "__main__":
     app.run(debug=True)
