@@ -25,9 +25,7 @@ def login():
 def toMyMap():
     if request.method == 'GET':
         if User.UserEmail !=  None and User.UserID !=  None:
-            return render_template(
-                'mymap.html', UserEmail=User.UserEmail, UserID=User.UserID
-            )
+            return redirect('/my-map')
         else:
             return render_template(
             'login.html'
@@ -37,7 +35,7 @@ def toMyMap():
         print(type(UserData))
         User.UserEmail = UserData['User']['email']
         User.UserID = UserData['User']['uid']
-        return redirect('/my-map')
+        return jsonify({'message': 'Data received by Python'})
     
 @app.route('/CreateAccount', methods=['GET','POST'])
 def CreateAccount():
@@ -77,9 +75,15 @@ def map_page():
         else:
             # それ以外のPOSTリクエストではデフォルト値を使用
             lat, lng = default_lat, default_lng
-    else:
-        # GETリクエストの場合はデフォルト値を使用
-        lat, lng = default_lat, default_lng
+            
+    elif request.method == 'GET':
+        if User.UserEmail !=  None and User.UserID !=  None:
+            # GETリクエストの場合はデフォルト値を使用
+            lat, lng = default_lat, default_lng
+        else:
+            return render_template(
+            'login.html'
+            )
 
     # マップページを表示。初期値または検索結果をマップに反映
     return render_template("mymap.html", lat=lat, lng=lng, google_map_key=GOOGLE_MAP_KEY, map_marker=None)
