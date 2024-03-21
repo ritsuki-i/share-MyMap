@@ -1,30 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../static/js/Authentication.js" defer type="module"></script>
-    <title>Document</title>
-</head>
 
-<body>
-    <h1>login</h1>
-    <div class="EmailPassLogin">
-        <div class="EmailLogin">
-            メールアドレス:
-            <input type="email" id="LoginEmail">
+<htmllang="en">
+    
+    <head>
+        <title>Check In</title>
+        <meta charset="UTF -8">
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../static/Authentication.js" defer type="module"></script>
+        
+    </head>
+    
+     <body>
+        <div id="header">
+           
+            <div id="menu">
+                <ul>
+                    <li><a href="https://www.aoyama.ac.jp/faculty/science/">ABOUT</a></li>
+                    <li><a href="https://www.aoyama.ac.jp/faculty/science/">MEMBERS</a></li>
+                    <li><a href="https://www.aoyama.ac.jp/faculty/science/">SERVICE</a></li>
+                    <li><a href="https://www.aoyama.ac.jp/faculty/science/">CONTACT</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="PassLogin">
-            パスワード:
-            <input type="password" id="LoginPass">
-        </div>
-        <button id="login-emailpass">ログイン</button>
-    </div>
-    <button id="login-google">googleでログイン</button>
-    <form action="/CreateAccount" method="post">
-        <button type="submit">アカウント作成</button>
-    </form>
-</body>
 
-</html> 
+        <div id="title">
+            <h1 id="titletext">Travel Recorder</h1>
+            <div id="img">
+                <img src="pic.png" alt="logo" title="logo">
+            </div>
+        </div>
+
+        
+
+        <div id="loginBordering">
+            <div class="EmailPassLogin">
+                <div class="EmailLogin">
+                    Mail-Address:
+                    <input type="email" id="LoginEmail">
+                </div>
+                <div class="PassLogin">
+                    Password:
+                    <input type="password" id="LoginPass">
+                </div>
+                <button id="login-emailpass">LOGIN</button>
+            </div>
+            <button id="login-google">googleでログイン</button>
+            <form action="/CreateAccount" method="post">
+                <button type="submit">アカウント作成</button>
+            </form>
+
+        </div>
+
+        </body>
+</html>
