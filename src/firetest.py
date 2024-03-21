@@ -29,11 +29,6 @@ def setUser(Id,passwd,mail):
         u'mail': mail
     })
     
-def setUser2(User,passwd):
-    doc_ref2.set{
-        u'passwd': User.UserEmail,
-        u'mail': User.Id
-    }
     
 #Cloud Firestoreのサブコレクションにマーカー情報を格納
 def save_marker_to_firestore(marker_info,Id):
