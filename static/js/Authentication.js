@@ -103,6 +103,7 @@ CreateAccount?.addEventListener("click", function () {
         alert("メールアドレス確認用のメールを送信しました。承認してください。");
       })
       .catch((error) => {
+<<<<<<< Updated upstream:static/js/Authentication.js
         if (
           error.message ===
           "Firebase: Password should be at least 6 characters (auth/weak-password)."
@@ -116,6 +117,10 @@ CreateAccount?.addEventListener("click", function () {
         }else{
           alert(error.message);
         }
+=======
+          console.log(error);
+        alert("存在しないメールアドレスです");
+>>>>>>> Stashed changes:static/Authentication.js
       });
   }
 });
