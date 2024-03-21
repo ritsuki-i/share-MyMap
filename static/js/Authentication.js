@@ -63,24 +63,30 @@ emailpassLogin?.addEventListener("click", function () {
       const token = userCredential.accessToken;
       const dataToPython = { User: user, Token: token };
 
-      fetch("/toMyMap", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToPython),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Data from Python:", data);
-          window.location.href = "/toMyMap";
+      console.log("firebase.auth().currentUser.emailVerified");
+
+      if (firebase.auth().currentUser.emailVerified){
+        fetch("/toMyMap", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToPython),
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Data from Python:", data);
+            window.location.href = "/toMyMap";
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }else{
+        alert("メールアドレスの認証が完了しておりません")
+      };
     })
     .catch((error) => {
-      console.error("Error:", error);
+      console.log("Error:", error);
     });
 });
 
@@ -93,10 +99,8 @@ CreateAccount?.addEventListener("click", function () {
   } else {
     createUserWithEmailAndPassword(auth, inputEmail.value, inputPass.value)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
-        alert("アカウント作成が完了しました");
+        firebase.auth().currentUser.sendEmailVerification();
+        alert("メールアドレス確認用のメールを送信しました。承認してください。");
       })
       .catch((error) => {
         if (
