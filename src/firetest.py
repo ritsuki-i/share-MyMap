@@ -2,6 +2,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+from src.User import User
+
 # ===================== Firebase =====================================
 # このPythonファイルと同じ階層に認証ファイル(秘密鍵)を配置して、ファイル名を格納
 JSON_PATH = 'static\js\pytest-bf0f6-firebase-adminsdk-8xy33-9a264f3956.json'
@@ -12,6 +14,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 # ====================================================================
 
+User=User()
 
 collectionName="name" #'name'-->コレクション名
 colectionLocate="location" # 'location'-->サブコレクション名
@@ -25,6 +28,12 @@ def setUser(Id,passwd,mail):
         u'passwd': passwd,
         u'mail': mail
     })
+    
+def setUser2(User,passwd):
+    doc_ref2.set{
+        u'passwd': User.UserEmail,
+        u'mail': User.Id
+    }
     
 #Cloud Firestoreのサブコレクションにマーカー情報を格納
 def save_marker_to_firestore(marker_info,Id):
@@ -40,7 +49,7 @@ def save_marker_to_firestore(marker_info,Id):
     })
 
 #Cloud Firestoreのサブコレクションにある全てのドキュメントの情報をすべて取得
-def get_allmarker_to_firestore(Id):
+def get_allmarker_from_firestore(Id):
     docs = db.collection(collectionName).document(Id).collection(colectionLocate).stream()
     for doc in docs:
         #Firestoreから取得したドキュメントを辞書のリストとして格納
@@ -50,7 +59,7 @@ def get_allmarker_to_firestore(Id):
     return docs_list  #全てのドキュメントの情報を辞書のリスト形式で返す
         
 #Cloud Firestoreのサブコレクションにある各ドキュメントの情報をすべて取得
-def get_marker_to_firestore(Id,LocationId):
+def get_marker_from_firestore(Id,LocationId):
     doc_ref = db.collection(collectionName).document(Id).collection(colectionLocate).document(LocationId)
     doc = doc_ref.get()
     if doc.exists:
@@ -62,7 +71,7 @@ def get_marker_to_firestore(Id,LocationId):
 
         
 #ex
-Id="15822097" #<-自動で割当？ 
+Id="15822097"
 passwd="15822097"
 mail="15822097@aoyama.jp"
 
@@ -76,5 +85,5 @@ LocationId="IZ0JM1G5m8bHOWLCNgP7"
 
 setUser(Id,passwd,mail)
 save_marker_to_firestore(marker,Id)
-get_allmarker_to_firestore(Id)
-get_marker_to_firestore(Id,LocationId)
+get_allmarker_from_firestore(Id)
+get_marker_from_firestore(Id,LocationId)
