@@ -11,7 +11,7 @@ cred = credentials.Certificate(JSON_PATH)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 # ====================================================================
-
+#test
 
 collectionName="name" #'name'-->コレクション名
 colectionLocate="location" # 'location'-->サブコレクション名
