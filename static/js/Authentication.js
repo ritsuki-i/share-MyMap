@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  sendEmailVerification,
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -62,10 +63,9 @@ emailpassLogin?.addEventListener("click", function () {
       const user = userCredential.user;
       const token = userCredential.accessToken;
       const dataToPython = { User: user, Token: token };
+      const emailVerified = user.emailVerified;
 
-      console.log("firebase.auth().currentUser.emailVerified");
-
-      if (firebase.auth().currentUser.emailVerified){
+      if (emailVerified){
         fetch("/toMyMap", {
           method: "POST",
           headers: {
@@ -99,8 +99,11 @@ CreateAccount?.addEventListener("click", function () {
   } else {
     createUserWithEmailAndPassword(auth, inputEmail.value, inputPass.value)
       .then((userCredential) => {
-        firebase.auth().currentUser.sendEmailVerification();
-        alert("メールアドレス確認用のメールを送信しました。承認してください。");
+        sendEmailVerification(auth.currentUser).then(() => {
+          alert(
+            "メールアドレス確認用のメールを送信しました。承認してください。"
+          );
+        });
       })
       .catch((error) => {
         if (
