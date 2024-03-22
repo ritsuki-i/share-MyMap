@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  sendEmailVerification,
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -62,10 +63,9 @@ emailpassLogin?.addEventListener("click", function () {
       const user = userCredential.user;
       const token = userCredential.accessToken;
       const dataToPython = { User: user, Token: token };
+      const emailVerified = user.emailVerified;
 
-      console.log("firebase.auth().currentUser.emailVerified");
-
-      if (firebase.auth().currentUser.emailVerified){
+      if (emailVerified) {
         fetch("/toMyMap", {
           method: "POST",
           headers: {
@@ -81,8 +81,8 @@ emailpassLogin?.addEventListener("click", function () {
           .catch((error) => {
             console.error("Error:", error);
           });
-      }else{
-        alert("メールアドレスの認証が完了しておりません")
+      } else {
+        alert("メールアドレスの認証が完了しておりません");
       };
     })
     .catch((error) => {
@@ -99,11 +99,14 @@ CreateAccount?.addEventListener("click", function () {
   } else {
     createUserWithEmailAndPassword(auth, inputEmail.value, inputPass.value)
       .then((userCredential) => {
-        firebase.auth().currentUser.sendEmailVerification();
-        alert("メールアドレス確認用のメールを送信しました。承認してください。");
+        sendEmailVerification(auth.currentUser).then(() => {
+          alert(
+            "メールアドレス確認用のメールを送信しました。承認してください。"
+          );
+        });
+        
       })
       .catch((error) => {
-<<<<<<< Updated upstream:static/js/Authentication.js
         if (
           error.message ===
           "Firebase: Password should be at least 6 characters (auth/weak-password)."
@@ -116,11 +119,8 @@ CreateAccount?.addEventListener("click", function () {
           alert("そのメールアドレスはすでに登録されています。");
         }else{
           alert(error.message);
+          console.log(error.message);
         }
-=======
-          console.log(error);
-        alert("存在しないメールアドレスです");
->>>>>>> Stashed changes:static/Authentication.js
       });
   }
 });
