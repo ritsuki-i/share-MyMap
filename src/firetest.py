@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from User import User
 
 from src.User import User
 
@@ -12,9 +13,6 @@ JSON_PATH = 'static\js\pytest-bf0f6-firebase-adminsdk-8xy33-9a264f3956.json'
 cred = credentials.Certificate(JSON_PATH)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-# ====================================================================
-
-User=User()
 
 collectionName="name" #'name'-->コレクション名
 colectionLocate="location" # 'location'-->サブコレクション名
@@ -22,11 +20,11 @@ docs_list = [] #<-マップマーカー用辞書のリスト
 
 
 #Cloud Firestoreのコレクションに個人のデータを格納
-def setUser(Id,passwd,mail):
-    doc_ref=db.collection(collectionName).document(Id)
+def setUser(User):
+    doc_ref=db.collection(collectionName).document(User.UserID)
     doc_ref.set({
-        u'passwd': passwd,
-        u'mail': mail
+        u'Email': User.UserEmail,
+        u'Id': User.UserID
     })
     
     
@@ -66,9 +64,10 @@ def get_marker_from_firestore(Id,LocationId):
 
         
 #ex
-Id="15822097"
-passwd="15822097"
-mail="15822097@aoyama.jp"
+
+User=User()
+User.UserID="15822097" #<-自動で割当？ 
+User.UserEmail="15822097@aoyama.jp"
 
 Lname="Shinjuku"
 lat=135
@@ -78,7 +77,8 @@ description="hitoippai"
 marker= {"label": Lname, "lat": lat, "lng": lng, "description": description}
 LocationId="IZ0JM1G5m8bHOWLCNgP7"
 
-setUser(Id,passwd,mail)
-save_marker_to_firestore(marker,Id)
-get_allmarker_from_firestore(Id)
-get_marker_from_firestore(Id,LocationId)
+setUser(User)
+save_marker_to_firestore(marker,User.UserID)
+get_allmarker_to_firestore(User.UserID)
+get_marker_to_firestore(User.UserID,LocationId)
+

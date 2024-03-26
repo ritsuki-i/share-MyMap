@@ -3,5 +3,6 @@
 *__pycache__
 *.pyc
 *.idea
+*.json
 pytest-bf0f6-firebase-adminsdk-8xy33-9a264f3956.json
-*.pyc
+
