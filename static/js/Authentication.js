@@ -83,7 +83,7 @@ emailpassLogin?.addEventListener("click", function () {
           });
       } else {
         alert("メールアドレスの認証が完了しておりません");
-      };
+      }
     })
     .catch((error) => {
       console.log("Error:", error);
@@ -104,20 +104,20 @@ CreateAccount?.addEventListener("click", function () {
             "メールアドレス確認用のメールを送信しました。承認してください。"
           );
         });
-        
       })
       .catch((error) => {
         if (
           error.message ===
           "Firebase: Password should be at least 6 characters (auth/weak-password)."
-        ){
+        ) {
           alert("パスワードは6文字以上で設定してください");
-        }else if (error.message === "Firebase: Error (auth/invalid-email)."){
+        } else if (error.message === "Firebase: Error (auth/invalid-email).") {
           alert("存在しないメールアドレスです");
-        }
-        else if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+        } else if (
+          error.message === "Firebase: Error (auth/email-already-in-use)."
+        ) {
           alert("そのメールアドレスはすでに登録されています。");
-        }else{
+        } else {
           alert(error.message);
           console.log(error.message);
         }
